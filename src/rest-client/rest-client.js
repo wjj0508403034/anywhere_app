@@ -6,7 +6,8 @@ const Http = require("http");
 const Querystring = require('querystring');
 
 
-function execute(httpAgent, options, payload) {
+function execute(url, options, payload) {
+  let httpAgent = url.protocol === "https:" ? Https : Http;
   return new Promise(function(reslove, reject) {
     const req = httpAgent.request(options, (res) => {
       let resData = [];
@@ -19,7 +20,13 @@ function execute(httpAgent, options, payload) {
       });
       res.on('end', () => {
         console.log('No more data in response.');
-        reslove(JSON.parse(resData.join('')));
+        let result = resData.join('');
+        try {
+          result = JSON.parse(result);
+        } catch (err) {
+          console.warn("Parse Json failed", err);
+        }
+        reslove(result);
       });
     });
 
@@ -36,19 +43,28 @@ function execute(httpAgent, options, payload) {
   });
 }
 
+function buildReqOptions(url, method, headers) {
+  return {
+    hostname: url.hostname,
+    port: url.port,
+    path: url.path,
+    method: method,
+    rejectUnauthorized: false,
+    headers: headers || {}
+  };
+}
+
 module.exports = {
+
+  get: function(urlString, headers) {
+    let url = URL.parse(urlString);
+    let reqOptions = buildReqOptions(url, "GET", headers);
+    return execute(url, reqOptions);
+  },
 
   post: function(urlString, payload, headers, options) {
     let url = URL.parse(urlString);
-    let reqOptions = {
-      hostname: url.hostname,
-      port: url.port,
-      path: url.path,
-      method: "POST",
-      rejectUnauthorized: false,
-      headers: headers
-    };
-
+    let reqOptions = buildReqOptions(url, "POST", headers);
 
     let postData = null;
     if (payload) {
@@ -56,8 +72,6 @@ module.exports = {
       reqOptions.headers["Content-Length"] = Buffer.byteLength(postData);
     }
 
-    let httpAgent = url.protocol === "https:" ? Https : Http;
-
-    return execute(httpAgent, reqOptions, postData);
+    return execute(url, reqOptions, postData);
   }
 };
