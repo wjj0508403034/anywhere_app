@@ -1,0 +1,28 @@
+{
+  "name": "anywhere_app",
+  "version": "1.0.0",
+  "description": "SAP Anywhere Sample APP",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjj0508403034/anywhere_app.git"
+  },
+  "keywords": [
+    "SAP",
+    "Anywhere",
+    "App"
+  ],
+  "author": "wjj0508403034@126.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wjj0508403034/anywhere_app/issues"
+  },
+  "homepage": "https://github.com/wjj0508403034/anywhere_app#readme",
+  "devDependencies": {
+    "express": "^4.15.3",
+    "salt": "^0.5.5"
+  }
+}
