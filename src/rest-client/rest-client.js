@@ -4,6 +4,7 @@ const URL = require('url');
 const Https = require("https");
 const Http = require("http");
 const Querystring = require('querystring');
+const HttpMethod = require("./http-method");
 
 
 function execute(url, options, payload) {
@@ -21,10 +22,12 @@ function execute(url, options, payload) {
       res.on('end', () => {
         console.log('No more data in response.');
         let result = resData.join('');
-        try {
-          result = JSON.parse(result);
-        } catch (err) {
-          console.warn("Parse Json failed", err);
+        if (result) {
+          try {
+            result = JSON.parse(result);
+          } catch (err) {
+            console.warn("Parse Json failed");
+          }
         }
         reslove(result);
       });
@@ -58,13 +61,13 @@ module.exports = {
 
   get: function(urlString, headers) {
     let url = URL.parse(urlString);
-    let reqOptions = buildReqOptions(url, "GET", headers);
+    let reqOptions = buildReqOptions(url, HttpMethod.GET, headers);
     return execute(url, reqOptions);
   },
 
-  post: function(urlString, payload, headers, options) {
+  post: function(urlString, payload, headers) {
     let url = URL.parse(urlString);
-    let reqOptions = buildReqOptions(url, "POST", headers);
+    let reqOptions = buildReqOptions(url, HttpMethod.POST, headers);
 
     let postData = null;
     if (payload) {
@@ -73,5 +76,11 @@ module.exports = {
     }
 
     return execute(url, reqOptions, postData);
+  },
+
+  delete: function(urlString, headers) {
+    let url = URL.parse(urlString);
+    let reqOptions = buildReqOptions(url, HttpMethod.DELETE, headers);
+    return execute(url, reqOptions);
   }
 };
