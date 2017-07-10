@@ -1,7 +1,7 @@
 'use strict';
 
 const Anywhere = require("./anywhere");
-const ErrorCodes = require("./../errors/error-codes");
+const Error = require("./../errors/error");
 const Token = require("./token");
 const RestClient = require("./../rest-client/rest-client");
 const OP_Install = "install";
@@ -24,7 +24,7 @@ function getToken(payload) {
 function getTokenByCode(req, res, next, redirect_uri) {
   let code = req.query.code;
   if (!code) {
-    next(ErrorCodes.Params_Invalid);
+    next(Error.new(Error.ErrorCodes.Params_Invalid));
     return;
   }
 
@@ -53,7 +53,7 @@ module.exports = {
      */
     app.get(`${Anywhere.RoutePrefix}/install`, Anywhere.verify, function(req, res, next) {
       if (!req.query) {
-        next(ErrorCodes.Params_Invalid);
+        next(Error.new(Error.ErrorCodes.Params_Invalid));
         return;
       }
 

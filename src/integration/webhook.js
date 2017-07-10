@@ -2,10 +2,17 @@
 
 const Anywhere = require("./anywhere");
 const Api = require("./api");
-const ErrorCodes = require("./../errors/error-codes");
+const Error = require("./../errors/error");
 const AppConfig = require("./../config/app-config");
 
-const WebhookNames = ["LOGIN", "APP_UNINSTALL", "Product/CREATE"];
+const WebhookNames = ["LOGIN",
+  "APP_UNINSTALL",
+  "Product/CREATE",
+  "Product/UPDATE",
+  "Product/DELETE",
+  "SKU/CREATE",
+  "SKU/UPDATE"
+];
 
 function MessageCollection(eventType) {
   this.eventType = eventType;
@@ -30,7 +37,7 @@ WebhookNames.forEach(function(webhookName) {
 
 function VerifySignature(req, res, next) {
   if (!req.body) {
-    next(ErrorCodes.Params_Invalid);
+    next(Error.new(Error.ErrorCodes.Params_Invalid));
     return;
   }
 
@@ -38,7 +45,7 @@ function VerifySignature(req, res, next) {
   let timestamp = req.body.timestamp;
 
   if (!Anywhere.verifySignature(hmac, timestamp)) {
-    next(ErrorCodes.SAP_Verify_Signature_Failed);
+    next(Error.new(Error.ErrorCodes.SAP_Verify_Signature_Failed));
     return;
   }
 
@@ -68,7 +75,7 @@ module.exports = {
         return;
       }
 
-      next(ErrorCodes.Params_Invalid);
+      next(Error.new(Error.ErrorCodes.Params_Invalid));
     });
 
     app.get(`${Anywhere.RoutePrefix}/webhooks`, function(req, res, next) {
@@ -95,7 +102,7 @@ module.exports = {
         return;
       }
 
-      next(ErrorCodes.Params_Invalid);
+      next(Error.new(Error.ErrorCodes.Params_Invalid));
     });
   }
 

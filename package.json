@@ -24,6 +24,8 @@
   "devDependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "html": "^1.0.0",
+    "log4js": "^1.1.1",
     "salt": "^0.5.5"
   }
 }

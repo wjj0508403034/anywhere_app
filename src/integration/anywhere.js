@@ -2,7 +2,7 @@
 
 const AppConfig = require("./../config/app-config");
 const Signature = require("./signature");
-const ErrorCodes = require("./../errors/error-codes");
+const Error = require("./../errors/error");
 const AnywhereConfig = require("./config");
 
 const anywhereConfig = new AnywhereConfig({
@@ -25,7 +25,7 @@ module.exports = {
   verify: function(req, res, next) {
     if (req.query && req.query.hmac && req.query.timestamp) {
       if (!verifyAnywhereSignature(req.query.hmac, req.query.timestamp)) {
-        next(ErrorCodes.SAP_Verify_Signature_Failed);
+        next(Error.new(Error.ErrorCodes.SAP_Verify_Signature_Failed));
         return;
       }
 

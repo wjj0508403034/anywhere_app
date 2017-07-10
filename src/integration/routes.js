@@ -1,7 +1,7 @@
 'use strict';
 
 const Anywhere = require("./anywhere");
-const ErrorCodes = require("./../errors/error-codes");
+const Error = require("./../errors/error");
 const Webhook = require("./webhook");
 const OAuth2 = require("./oauth2");
 const Api = require("./api");
@@ -24,5 +24,25 @@ module.exports = function(app) {
       }).catch(function(err) {
         next(err);
       });
+  });
+
+  app.patch(`${Anywhere.RoutePrefix}/config`, function(req, res, next) {
+    if (req.body) {
+      ["clientId", "clientSecret", "domain_anywhere", "domain_openapi", "installUrl", "applicationUrl"].forEach(
+        function(name) {
+          if (req.body[name]) {
+            Anywhere.Config[name] = req.body[name];
+          }
+        });
+
+      res.json({
+        msg: "Update config successfully."
+      });
+
+      return;
+    }
+
+    next(Error.new(Error.ErrorCodes.Params_Invalid));
+
   });
 };
