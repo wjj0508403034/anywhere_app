@@ -28,7 +28,7 @@ module.exports = function(app) {
 
   app.patch(`${Anywhere.RoutePrefix}/config`, function(req, res, next) {
     if (req.body) {
-      ["clientId", "clientSecret", "domain_anywhere", "domain_openapi", "installUrl", "applicationUrl"].forEach(
+      ["clientId", "clientSecret", "anywhereDomain", "openApiDomain", "installUrl", "applicationUrl"].forEach(
         function(name) {
           if (req.body[name]) {
             Anywhere.Config[name] = req.body[name];
