@@ -4,7 +4,7 @@ const express = require('express');
 const BodyParser = require('body-parser')
 const AppConfig = require("./config/app-config");
 const IntegrationRoutes = require("./integration/routes");
-const Logger = require("./logger/logger-factory").getLogger("index");
+const Logger = require("./logger/logger").getLogger("index");
 const app = express();
 const path = require("path");
 
