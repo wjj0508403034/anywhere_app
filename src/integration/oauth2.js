@@ -66,7 +66,6 @@ module.exports = {
       getTokenByCode(req, res, next, Anywhere.Config.installUrl);
     });
 
-
     /**
      * App Application URL
      */

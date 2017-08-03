@@ -6,8 +6,8 @@ const Error = require("./../errors/error");
 const AnywhereConfig = require("./config");
 
 const anywhereConfig = new AnywhereConfig({
-  clientId: "NiJqRp9kihyGIYesqaZv3VDfTWmQQrUg",
-  clientSecret: "JghctNYQpWb58Lml2QQLSGRbWWyscvDT",
+  clientId: "3jQKDjeWYP2c0IdS3OgQd8qxpKjqORbd",
+  clientSecret: "5GyrBhXIdxPGGp7z3jtkkhm083IJZ4sl",
   domain_anywhere: "go-mv.dd.smec.sap.corp",
   domain_openapi: "api-mv.dd.smec.sap.corp",
   installUrl: `http://${AppConfig.Domain}/anywhere/install`,

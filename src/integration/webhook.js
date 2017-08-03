@@ -4,6 +4,7 @@ const Anywhere = require("./anywhere");
 const Api = require("./api");
 const Error = require("./../errors/error");
 const AppConfig = require("./../config/app-config");
+const Logger = require("./../logger/logger").getLogger("webhook");
 
 const WebhookNames = ["LOGIN",
   "APP_UNINSTALL",
@@ -58,12 +59,11 @@ module.exports = {
   routes: function(app) {
 
     app.post(`${Anywhere.RoutePrefix}/install`, VerifySignature, function(req, res, next) {
-      res.json({
-        msg: "Uninstall app successfully."
-      });
+      Logger.info(req, "Received app uninstall message.\n", req.body);
     });
 
     app.post(`${Anywhere.RoutePrefix}/webhooks`, VerifySignature, function(req, res, next) {
+      Logger.info(req, "Received webhook message.\n", req.body);
       if (req.body && req.body.payload) {
         if (WebhookNames.indexOf(req.body.payload.event_type) === -1) {
           next("Unkown webhook name");
